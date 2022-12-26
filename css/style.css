@@ -56,3 +56,276 @@ h1, h2 {
     font-size: 4rem;
     margin-bottom: 2rem;
 }
+
+/* Ejemplos CSS Grid */
+
+/* 1.- Display: grid */
+/* Solo afecta al primer nivel de hijos, los posiciona en las columnas automaticamente de izq a derecha */
+
+.grid-1{
+    display: grid;
+}
+
+
+/* 2.- grid-template-columns: unidad */
+/* Dibuja columnas en el grid */
+.grid-2{
+    display: grid;
+    grid-template-columns: 300px 300px 300px 300px; /* Crea 4 columnas de 300px c/u */
+    
+}
+
+/* Para pocisionar un elemento en determinado orden y columna */
+.grid-2 .box:nth-child(2){
+    grid-column-start: 2; /* Linea de inicio */
+    grid-column-end: 3; /* Linea final */
+
+    /* shorthand
+        grid-column: Numero-start / Numero-end;
+    */
+    grid-column: 2/3;
+}
+
+
+/* --------------------------- */
+/* 3.- grid-template-rows: unidad */
+/* Sirve para dibujar filas (renglones) en el grid */
+
+.grid-3{
+    display: grid;
+    grid-template-rows: 100px 100px 100px;
+    grid-template-rows: repeat(6, 200px);
+}
+/* Para pocisionar un elemento en determinado orden y fila */
+.grid-3 .box:nth-child(2){
+    grid-row-start: 2; /* Linea de inicio */
+    grid-row-end: 3; /* Linea final */
+
+    /* shorthand
+        grid-row: Numero-start / Numero-end;
+    */
+    grid-row: 1/2;
+}
+
+/* --------------------------------------------------------------------------------- */
+/* 4.- grid span */
+/* Sirve para indicarle el numero de columnas o filas que puede ocupar
+        grid-column: inicio/ span numeroDeColumnasAUtilizar
+        ejemplo:
+
+        grid-column: 2 / span 3  <-- Esto indica que el elemento iniciara en la linea 2 y ocupara 3 columnas por lo tanto su grid-column-end sera 5.
+*/
+
+.grid-4{
+    display: grid;
+    grid-template-rows: repeat(2, 300px);
+    grid-template-columns: repeat(3, 320px);
+}
+
+.grid-4 .box:nth-child(2){
+    background-color: green;
+    grid-column: 2/ span 3;
+    grid-row: 1 / span 3;
+}
+
+
+/* --------------------------------------------------------------------------------- */
+/* 5.- grid shorthand */
+/* grid: rows / columns */
+
+.grid-5{
+    display: grid;
+    grid-template-columns: repeat(3, 300px);
+    grid-template-rows: repeat(2, 300px);
+
+    grid: repeat(2, 300px) / repeat(3, 300px);
+}
+
+/* --------------------------------------------------------------------------------- */
+/* 6.- grid autoflow */
+/*Ayuda a evitar el salto de linea, pocionando a los elementos sin espacios en blanco*/
+
+.grid-6{
+    display: grid;
+    grid: repeat(2, 300px) / repeat(3, 300px);
+    grid-auto-flow: dense;
+}
+
+.grid-6 .box:nth-child(2){
+    grid-column: 1/2;
+}
+
+
+/* --------------------------------------------------------------------------------- */
+/* 7.- grid fr y grid repeat */
+/* grid repeat() sirve para repetir un valor ciertas veces
+        repeat(Numdeveces, cantidadARepetir)
+
+    grid fr --->son las fracciones equitativas a cada uno de los elementos hijos, similiar a flex-grow.
+
+    NOTA: cuando son rows es necesario colocar una unidad fija (pixeles, rems) para que el repeat tomo esa altura, porque si no solo se toma la altura necesaria para sus contenido.
+*/
+
+
+.grid-7{
+    display: grid;
+    grid-template-columns: 2fr repeat(2, 1fr);
+
+    grid: repeat(2, 1fr) / repeat(3, 1fr);
+}
+
+
+/* --------------------------------------------------------------------------------- */
+/* 8.- grid gap */
+/* Sirve para dar separacion entre columnas y rows sin necesidad de agregar un margin 
+    puede utilizarse dos formas
+
+    1) Forma larga
+        column-gap: xxrem <--- Esto es separacion entre columnas
+        row-gap: xxrem <--Separación entre filas
+    
+    2) Forma Corta
+        gap: xxremParaROWS xxremParaCOLUMNS;    
+
+        2.1) si el valor se repite tatno en rows como en columns
+        gap: xxremValor;
+*/
+
+.grid-8{
+    display: grid;
+    grid: repeat(2, 20rem) / repeat(3, 1fr);
+    column-gap: 4rem;
+    row-gap: 4rem;
+
+    /* shorthand 
+        gap: rows columns
+    */
+    gap: 4rem 8rem;
+}
+.grid-8 .box{
+    margin: 0;
+}
+
+/* --------------------------------------------------------------------------------- */
+/* 9.- grid areas */
+/* Sirve para crear y nombrar areas en el grid y en ellas colocar los elementos dentro de ellas.
+*/
+
+.grid-9{
+    display: grid;
+    height: 120rem;
+    grid-template-areas: "header header header"
+                         "nav nav nav"
+                         "contenido contenido sidebar"
+                         "footer footer footer"
+                        ;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 2.5fr 1fr 6fr 2.5fr ;
+    gap: 4rem;
+}
+.grid-9 .box{
+    margin: 0;
+}
+
+.grid-9 .box:nth-child(1){
+    grid-area: header;
+}
+.grid-9 .box:nth-child(2){
+    grid-area: nav;
+}
+.grid-9 .box:nth-child(3){
+    grid-area: contenido;
+}
+.grid-9 .box:nth-child(4){
+    grid-area: sidebar;
+}
+.grid-9 .box:nth-child(5){
+    grid-area: footer;
+}
+
+/* --------------------------------------------------------------------------------- */
+/* 10.- grid templates */
+/* Es un shorthand que incluye las areas, los templates-columns y rows */
+/* Funciona asi:
+
+    grid-template: "xNombreArea" xfrROW
+                    "xNombreArea" xfrROW / xfrCOLUMN  xfrCOLUMN;
+
+    NOTA: No funciona el repeat en este shorthand
+*/
+
+.grid-10{
+    display: grid;
+    height: 120rem;
+    grid-template: "header header header" 2.5fr
+                    "nav nav nav" 1fr
+                    "contenido contenido sidebar" 6fr 
+                    "footer footer footer" 2.5fr / 1fr 1fr 1fr
+                    ;
+    gap: 4rem;
+}
+.grid-10 .box{
+    margin: 0;
+}
+
+.grid-10 .box:nth-child(1){
+    grid-area: header;
+}
+.grid-10 .box:nth-child(2){
+    grid-area: nav;
+}
+.grid-10 .box:nth-child(3){
+    grid-area: contenido;
+}
+.grid-10 .box:nth-child(4){
+    grid-area: sidebar;
+}
+.grid-10 .box:nth-child(5){
+    grid-area: footer;
+}
+
+/* --------------------------------------------------------------------------------- */
+/* 11.- Alineacion de grid */
+/* Para alinear los elementos hijos dentro del contendor padre, se utilia Aling-items: o             place-content: ;
+   Al contendor se le da una altura fija los elementos crecen automaticamente porque su align-items viene strech por defecto, pero al igual que en flex-box puede recibir center, end, start y los posiciona verticalemnte*/
+
+.grid-11{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    height: 300px;
+    align-items: end;
+}
+
+
+/* --------------------------------------------------------------------------------- */
+/* 12.- grid Autofill y Autofit */
+/*
+
+grid-template-columns: repeat(auto-fill, 200px);
+grid-template-columns: repeat(auto-fit, 200px);
+
+    auto-fill -> genera columnas mientras siga teniendo espacio en el contendor 
+    auto-fit -> solo crea las columnas necesarias para los hijos del contendor, ejemplo si en el contendor padre tiene 4 divs hijo auto-fit creara solo 4 columnas con el ancho que le indicamos.
+
+
+    NOTA: NO funcionan con fracciones (fr) para que funcionen las fracciones se debe ocupar con un minmax(), de la siguiente forma
+
+    grid-template-columns: repeat(auto-fit, minmax(valorMinimo, valorMaximo));
+
+    el valor minimo se aplicara cuando el elemento hijo tenga ese valor
+    el valor maximo se aplicara cuando el ekemento hijo no tenga el valorMinimo
+    por ejemplo
+
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    si el elemento hijo, no mide 200px seguira aplicando el tamaño maximo,
+    si se reduce el tamaño del elemento hijo a 200px, dejara de  tomar 1fr y aplicara 200px y hara un salto de linea
+
+ */
+
+.grid-12{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 200px);
+    grid-template-columns: repeat(auto-fit, 200px);
+
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
